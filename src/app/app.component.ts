@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {fromEvent} from 'rxjs';
+import { of} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -9,19 +10,19 @@ import {fromEvent} from 'rxjs';
 export class AppComponent implements OnInit{
   title = 'observables';
 
-  // creating observable
-  clicking$ = fromEvent(document, 'click');
+  source$ = of('Hello', 'Rxjs', 'Operators', 'I am here');
 
   constructor() { }
 
 
   ngOnInit(): void {
     // subscribe to observable
-    this.clicking$.subscribe({
-      next: event => console.log(event),
-      error: error => console.log(error),
-      complete: () => console.log(' Completed ')
-    });
+    this.source$.pipe(
+      // add ! to all values
+      // map( value => value + '!')
+      // except Operators show all values
+      filter( value => value !== 'Operators' )
+    ).subscribe( val => console.log(val));
   }
 
 
