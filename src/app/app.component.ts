@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {fromEvent, of} from 'rxjs';
+import {fromEvent} from 'rxjs';
+import {tap, throttleTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -8,21 +9,16 @@ import {fromEvent, of} from 'rxjs';
 })
 export class AppComponent implements OnInit{
   title = 'observables';
-
-  cordinateX: number;
-  cordinateY: number;
-
-  moveStream$ = fromEvent(document, 'mousemove');
+  scrolling = '';
+  moveStream$ = fromEvent(document, 'scroll');
 
   constructor() {
   }
-
   ngOnInit(): void {
-    this.moveStream$.subscribe( val => {
-      // console.log(val);
-      this.cordinateX = val.clientX;
-      this.cordinateY = val.clientY;
-    });
+    this.moveStream$.pipe(
+      throttleTime(300),
+      tap(val => { console.log(val); this.scrolling += 'Scrolling:)  '; })
+    ).subscribe();
   }
 
 
