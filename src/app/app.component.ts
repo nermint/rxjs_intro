@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import { of} from 'rxjs';
+import {fromEvent, of} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,20 +11,24 @@ import {filter, map} from 'rxjs/operators';
 export class AppComponent implements OnInit{
   title = 'observables';
 
-  source$ = of('Hello', 'Rxjs', 'Operators', 'I am here');
-
-  constructor() { }
-
+  inputVal: string;
+  user;
+  constructor(private http: HttpClient) {
+  }
 
   ngOnInit(): void {
-    // subscribe to observable
-    this.source$.pipe(
-      // add ! to all values
-      // map( value => value + '!')
-      // except Operators show all values
-      filter( value => value !== 'Operators' )
-    ).subscribe( val => console.log(val));
   }
+
+  searchUser(val){
+    this.inputVal = val;
+    this.http.get(`https://api.github.com/users/${this.inputVal}`)
+      .subscribe(data => {
+        console.log(data);
+        this.user = data;
+      });
+    console.log(this.inputVal);
+  }
+
 
 
 }

@@ -1,2 +1,10 @@
 <h1>Hello Rxjs</h1>
-<p>Operators</p>
+<input type="text" placeholder="Search here" [(ngModel)]="inputValue" (keyup)="searchUser(inputValue)">
+
+<div *ngIf="user">
+  <img src="{{user.avatar_url}}" width="150" alt=""> <br>
+  <b>Username: </b> {{user.login}}  <br>
+  <b>Bio: </b> {{user.bio}}  <br>
+  <b>Public repos: </b> {{user.public_repos}} <br>
+  <b>Created at: </b> {{user.created_at | date}}
+</div>
