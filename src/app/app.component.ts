@@ -17,7 +17,11 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     // subscribe to observable
-    this.clicking$.subscribe(event => console.log(event));
+    this.clicking$.subscribe({
+      next: event => console.log(event),
+      error: error => console.log(error),
+      complete: () => console.log(' Completed ')
+    });
   }
 
 
