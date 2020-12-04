@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {fromEvent, interval} from 'rxjs';
-import {take, tap} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+
 
 
 @Component({
@@ -11,12 +11,25 @@ import {take, tap} from 'rxjs/operators';
 export class AppComponent implements OnInit{
   title = 'observables';
 
-  counter$ = interval(1000);
+  subject = new Subject<number>();
+
 
   constructor() {
   }
   ngOnInit(): void {
-      this.counter$.pipe( take(5) ).subscribe(val => console.log(val));
+      // first observer
+    this.subject.subscribe({
+      next: (v) => console.log(`Observer first: ${v}`)
+    });
+
+    // second observer
+    this.subject.subscribe({
+      next: (v) => console.log(`Observer second: ${v}`)
+    });
+
+    this.subject.next(1); // value is given to subject
+    this.subject.next(2); // second value to subject
+
   }
 
 
