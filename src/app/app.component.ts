@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ReplaySubject} from 'rxjs';
+import {AsyncSubject} from 'rxjs';
 
 
 
@@ -11,7 +11,7 @@ import {ReplaySubject} from 'rxjs';
 export class AppComponent implements OnInit{
   title = 'observables';
 
-  subject = new ReplaySubject(3);
+  subject = new AsyncSubject();
 
   constructor() {
   }
@@ -23,13 +23,11 @@ export class AppComponent implements OnInit{
     this.subject.next(2);
     this.subject.next(3);
     this.subject.next(4);
-
-    setTimeout(  () => {
-      this.subject.subscribe({
-          next: (value) => console.log(`Observer B: ${value}`)
-      });
-    }, 2000);
-    setTimeout(  () => this.subject.next(5), 3000);
+    this.subject.subscribe({
+      next: (value) => console.log(`Observer B: ${value}`)
+    });
+    this.subject.next(5);
+    this.subject.complete();
 
   }
 
