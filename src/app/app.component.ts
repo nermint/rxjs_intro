@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {from, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 
 
@@ -11,26 +11,25 @@ import {from, Subject} from 'rxjs';
 export class AppComponent implements OnInit{
   title = 'observables';
 
-  subject = new Subject<number>();
-
-  observable = from([1, 2, 3]);
+  behSubject = new BehaviorSubject(0); // beginning value
 
   constructor() {
   }
   ngOnInit(): void {
-      // first observer
-    this.subject.subscribe({
-      next: (v) => console.log(`Observer first: ${v}`)
+    this.behSubject.subscribe({
+      next: (value => console.log(`Observer A: ${value}`))
     });
+    this.behSubject.next(1);
+    this.behSubject.next(2);
 
-    // second observer
-    this.subject.subscribe({
-      next: (v) => console.log(`Observer second: ${v}`)
-    });
-
-    // subject as an argument
-    this.observable.subscribe(this.subject);
-
+    setTimeout(  () => {
+      this.behSubject.subscribe({
+          next: (value) => console.log(`Observer B: ${value}`)
+      });
+    }, 1000);
+    setTimeout(  () => {
+      this.behSubject.next(3);
+    }, 2000);
 
   }
 
