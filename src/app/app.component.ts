@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
+import {from, Subject} from 'rxjs';
 
 
 
@@ -13,6 +13,7 @@ export class AppComponent implements OnInit{
 
   subject = new Subject<number>();
 
+  observable = from([1, 2, 3]);
 
   constructor() {
   }
@@ -27,8 +28,9 @@ export class AppComponent implements OnInit{
       next: (v) => console.log(`Observer second: ${v}`)
     });
 
-    this.subject.next(1); // value is given to subject
-    this.subject.next(2); // second value to subject
+    // subject as an argument
+    this.observable.subscribe(this.subject);
+
 
   }
 
